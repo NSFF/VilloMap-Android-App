@@ -8,6 +8,10 @@ This project represents an Android Phone application where you can view OPEN Vil
 
 * API SDK: 21 Android (Lollipop)
 
+# Setting up the project
+
+If you initialized the project on your local setup, you will need to create your google maps android SDK API key and add a variable MAPS_API_Key=<your key here> in your local.properties folder to make the google maps work.
+
 # Features
 
 * Displaying all OPEN Villo bicycle locations
