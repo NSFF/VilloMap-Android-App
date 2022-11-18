@@ -32,3 +32,6 @@ No Bugs as of yet
 I used several tutorials to help me during this project:
 
 * Android online beginner course: https://developer.android.com/courses/android-basics-kotlin/course
+* Fixed a bug where design preview would not show by changing tools:layout: https://stackoverflow.com/questions/23898992/android-studio-google-map-v2-fragment-rendering
+* Install failure of emulator: https://stackoverflow.com/questions/4709137/solution-to-install-failed-insufficient-storage-error-on-android
+* 
