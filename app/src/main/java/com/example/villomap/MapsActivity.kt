@@ -1,23 +1,30 @@
 package com.example.villomap
 
-import android.graphics.Bitmap
-import androidx.appcompat.app.AppCompatActivity
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.os.Bundle
-
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import com.example.villomap.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.example.villomap.databinding.ActivityMapsBinding
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.vmadalin.easypermissions.EasyPermissions
+import com.vmadalin.easypermissions.dialogs.SettingsDialog
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.PermissionCallbacks {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    object PermissionConstants{
+        const val PERM_LOC_RAT_MESS: String = "This application will not use your current location"
+        const val REQUEST_CODE_LOCATION_PERMISSION: Int = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +36,54 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        setViewVisibility()
+    }
+
+    private fun hasLocationPermission() =
+        EasyPermissions.hasPermissions(
+            applicationContext,
+            ACCESS_FINE_LOCATION
+        )
+
+    private fun requestLocationPermission() {
+        EasyPermissions.requestPermissions(
+            this,
+            PermissionConstants.PERM_LOC_RAT_MESS,
+            PermissionConstants.REQUEST_CODE_LOCATION_PERMISSION,
+            ACCESS_FINE_LOCATION
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
+        TODO("Not yet implemented")
+    }
+
+
+    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
+        Toast.makeText(
+            applicationContext,
+            "Permission Granted!",
+            Toast.LENGTH_SHORT
+        ).show()
+        setViewVisibility()
+    }
+
+    private fun setViewVisibility() {
+        if (hasLocationPermission()) {
+
+        } else {
+
+        }
     }
 
     /**
@@ -54,3 +109,4 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 }
+
