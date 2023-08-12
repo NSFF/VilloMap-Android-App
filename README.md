@@ -36,3 +36,4 @@ I used several tutorials to help me during this project:
 * Install failure of emulator: https://stackoverflow.com/questions/4709137/solution-to-install-failed-insufficient-storage-error-on-android
 * Info about Using permissions: https://stackoverflow.com/questions/40142331/how-to-request-location-permission-at-runtime
 * Git Repo about easy permissions: https://github.com/googlesamples/easypermissions
+* Get Request on a url using retrofit: https://www.youtube.com/watch?v=sRLunCZX2Uc
