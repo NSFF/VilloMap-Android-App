@@ -6,6 +6,9 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AbsListView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -30,6 +33,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private lateinit var villoData : FeatureCollection
+    private val villoDataHandler : VilloDataHandler = VilloDataHandler()
     private lateinit var userLocation : LatLng
     private var permissionDenied = false
 
@@ -43,15 +47,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
         setContentView(binding.root)
 
         // GET VILLO DATA CODE //
-        val villoAPI = RetrofitHelper.getInstance().create(VilloAPI::class.java)
-        // launching a new coroutine
-        GlobalScope.launch {
-            villoData = villoAPI.getData().body()!!
-            if (villoData != null)
-            // Checking the results
-                Log.d("Villo Data: ", villoData.toString())
-                Log.d("Villo Data: ", villoData.features[0].properties.name_nl.toString())
-        }
+        villoData = villoDataHandler.villoData
         // GET VILLO DATA CODE //
 
         // GOOGLE MAPS CODE //
@@ -63,7 +59,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
 
         mapFragment.getMapAsync(this)
         // GOOGLE MAPS CODE //
+
     }
+
 
     private fun hasLocationPermission() =
         EasyPermissions.hasPermissions(
@@ -225,7 +223,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 
-
+    fun onClickUpdate(view: View) {
+        var dateText : TextView = findViewById(R.id.lastUpdateText)
+        dateText.text = "test"
+    }
 
 
 }

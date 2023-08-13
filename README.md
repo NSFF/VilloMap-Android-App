@@ -19,14 +19,14 @@ If you initialized the project on your local setup, you will need to create your
 * Displaying date of last update of the data
 * Refresh button to forcefully refresh all data pulled from https://data.mobility.brussels/geoserver/bm_bike/wfs?service=wfs&version=1.1.0&request=GetFeature&typeName=bm_bike:villo&outputFormat=json&srsName=EPSG:4326
 * Persisting Data 
-* Fetching Data from Core Data if already exists
+* Fetching Data from internal storage if already exists
 * Updating data on Startup if it's more than 15 minutes old
 * Tapping Annotations pops up a little callout showing more information like the Street
 * User location will be shown if given permission
 
 # Known Bugs
 
-No Bugs as of yet
+* Unsure if user location will be updated if they move. (I tried implementing this, but had a lot of permission/version issues and eventually gave up)
 
 # References
 I used several tutorials to help me during this project:
