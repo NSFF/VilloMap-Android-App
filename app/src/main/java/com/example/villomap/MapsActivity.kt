@@ -1,11 +1,9 @@
 package com.example.villomap
 
 import android.Manifest
-import android.Manifest.permission
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -22,8 +20,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.vmadalin.easypermissions.EasyPermissions
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -35,22 +31,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
     private lateinit var binding: ActivityMapsBinding
     private lateinit var villoData : FeatureCollection
     private lateinit var userLocation : LatLng
-    // Define a constant for the request code
-    val REQUEST_LOCATION_PERMISSION = 0
-    private lateinit var locationCallback: LocationCallback
     private var permissionDenied = false
 
-    // Define an array of permissions to request
-    val locationPermissions = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION
-    )
-
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    object PermissionConstants{
-        const val PERM_LOC_RAT_MESS: String = "This application will not use your current location"
-        const val REQUEST_CODE_LOCATION_PERMISSION: Int = 1
-    }
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,21 +53,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
                 Log.d("Villo Data: ", villoData.features[0].properties.name_nl.toString())
         }
         // GET VILLO DATA CODE //
-/*
-        // Check if the permissions are already granted
-        if (ActivityCompat.checkSelfPermission(this, locationPermissions[0]) == PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this, locationPermissions[1]) == PackageManager.PERMISSION_GRANTED) {
-            // Permissions are granted, proceed with getting the location
-            //Log.d("VilloApp","latitude.toString()")
-
-        } else {
-            // Permissions are not granted, request them
-            ActivityCompat.requestPermissions(this, locationPermissions, REQUEST_LOCATION_PERMISSION)
-        }
-*/
-        /*
-        checkLocationPermission()
-        fetchLocation()*/
 
         // GOOGLE MAPS CODE //
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -96,145 +64,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
         mapFragment.getMapAsync(this)
         // GOOGLE MAPS CODE //
     }
-/*
-    @SuppressLint("MissingPermission")
-    private fun initMap() {
-        mMap.isMyLocationEnabled = true
 
-        fusedLocationProviderClient.lastLocation
-            .addOnSuccessListener { location : Location? ->
-                updateMapLocation(location)
-            }
-
-        initLocationTracking()
-
-    }
-
-    @Suppress("DEPRECATION")
-    @SuppressLint("MissingPermission")
-    private fun initLocationTracking() {
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                locationResult ?: return
-                for (location in locationResult.locations){
-                    updateMapLocation(location)
-                }
-            }
-        }
-        fusedLocationProviderClient.requestLocationUpdates(
-            LocationRequest(),
-            locationCallback,
-            null)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if( ::mMap.isInitialized ) {
-            initLocationTracking()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-    }
-
-    private fun updateMapLocation(location: Location?) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(
-            location?.latitude ?: 0.0,
-            location?.longitude ?: 0.0)))
-
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(15.0f))
-    }
-
-    // Override the onRequestPermissionsResult method to handle the result of the request
-    @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_LOCATION_PERMISSION -> {
-                // Check if the permissions are granted
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    // Permissions are granted, proceed with getting the location
-                    // Get the last known location
-                    /*fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                        // Check if the location is not null
-                        if (location != null) {
-                            // Get the latitude and longitude from the location object
-                            val latitude = location.latitude
-                            val longitude = location.longitude
-
-                            // Do something with the location, such as showing a toast
-                            Toast.makeText(this, "Latitude: $latitude, Longitude: $longitude", Toast.LENGTH_SHORT).show()
-                            Log.d("VilloApp",latitude.toString())
-                        }
-                    }*/
-                    initMap()
-                } else {
-                    // Permissions are denied, show a message or handle it accordingly
-                    Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-*/
     private fun hasLocationPermission() =
         EasyPermissions.hasPermissions(
             applicationContext,
             ACCESS_FINE_LOCATION
         )
-/*
-    private fun requestLocationPermission() {
-        EasyPermissions.requestPermissions(
-            this,
-            PermissionConstants.PERM_LOC_RAT_MESS,
-            PermissionConstants.REQUEST_CODE_LOCATION_PERMISSION,
-            ACCESS_FINE_LOCATION
-        )
-    }
 
-    /*override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-    }*/
-
-    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
-        TODO("Not yet implemented")
-    }
-
-*/
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
         Toast.makeText(
             applicationContext,
             "Permission Granted!",
             Toast.LENGTH_SHORT
         ).show()
-        //checkLocationPermission()
     }
-/*
-    private fun checkLocationPermission() {
-        if (!hasLocationPermission()) {
-            requestLocationPermission()
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    fun fetchLocation() {
-        if(hasLocationPermission()){
-            // Get the last known location
-            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                // Check if the location is not null
-                if (location != null) {
-                    // Get the latitude and longitude from the location object
-                    userLocation = LatLng(location.latitude, location.longitude)
-                }
-            }
-        }
-    }*/
 
     /**
      * Manipulates the map once available.
@@ -252,7 +95,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
         //mMap.setOnMyLocationClickListener(this)
         enableMyLocation()
 
-        /*var coordinate: LatLng
+        var coordinate: LatLng
 
         // loop over all OPEN villo addresses and add them to maps
         for (feature in villoData.features) {
@@ -276,16 +119,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
             }
         }
 
+        // zoom in on user location if permission granted otherwise the first villo stand
         if (hasLocationPermission()) {
-            mMap.isMyLocationEnabled = true
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation))
+            // Get the last known location
+            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                // Check if the location is not null
+                if (location != null) {
+                    // Get the latitude and longitude once we received the user location
+                    userLocation = LatLng(location.latitude, location.longitude)
+                    mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation))
+                }
+            }
         } else {
             var coordinate: LatLng = LatLng(
                 villoData.features[0].geometry.coordinates[1],
                 villoData.features[0].geometry.coordinates[0]
             )
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f))
             mMap.moveCamera(CameraUpdateFactory.newLatLng(coordinate))
-        }*/
+        }
     }
 
     /**
