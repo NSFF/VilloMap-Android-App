@@ -148,7 +148,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
             mMap.moveCamera(CameraUpdateFactory.newLatLng(coordinate))
         }
 
-        // Set an OnMarkerClickListener on the map
+        // Set an OnMarkerClickListener on the map and redirect to google maps routing
         mMap.setOnMarkerClickListener { clickedMarker ->
             val intent: Intent = Intent(android.content.Intent.ACTION_VIEW,
                 Uri.parse("https://www.google.com/maps/dir/?api=1"+
