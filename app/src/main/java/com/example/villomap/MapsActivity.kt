@@ -5,6 +5,8 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.AbsListView
@@ -15,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.villomap.data.FeatureCollection
 import com.example.villomap.databinding.ActivityMapsBinding
+import com.example.villomap.util.getCurrentDateTime
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -26,6 +29,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.vmadalin.easypermissions.EasyPermissions
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.PermissionCallbacks {
@@ -36,6 +41,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
     private val villoDataHandler : VilloDataHandler = VilloDataHandler()
     private lateinit var userLocation : LatLng
     private var permissionDenied = false
+    private val zoomInLvl = 11.0f
+    private val updateTextWaitingTime : Long = 3500 // value in milliseconds
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -89,8 +96,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        //mMap.setOnMyLocationButtonClickListener(this)
-        //mMap.setOnMyLocationClickListener(this)
+
+        // remove all markers in case there were
+        mMap.clear()
         enableMyLocation()
 
         var coordinate: LatLng
@@ -125,7 +133,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
                 if (location != null) {
                     // Get the latitude and longitude once we received the user location
                     userLocation = LatLng(location.latitude, location.longitude)
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f))
+                    mMap.moveCamera(CameraUpdateFactory.zoomTo(zoomInLvl))
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation))
                 }
             }
@@ -134,8 +142,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
                 villoData.features[0].geometry.coordinates[1],
                 villoData.features[0].geometry.coordinates[0]
             )
-            mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f))
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(zoomInLvl))
             mMap.moveCamera(CameraUpdateFactory.newLatLng(coordinate))
+        }
+
+        // Set an OnMarkerClickListener on the map
+        mMap.setOnMarkerClickListener { clickedMarker ->
+            // Do something when the marker is clicked, such as showing a toast message
+            Toast.makeText(this, "Clicked on ${clickedMarker.title}", Toast.LENGTH_SHORT).show()
+            // Return true to indicate that the click event is consumed
+            true
         }
     }
 
@@ -223,11 +239,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 
+
     fun onClickUpdate(view: View) {
-        var dateText : TextView = findViewById(R.id.lastUpdateText)
-        dateText.text = "test"
+        var updateButton : TextView = findViewById(R.id.updateButton)
+        updateButton.text = "Last update: " + getCurrentDateTime().toString()
+
+        // refresh map
+        onMapReady(mMap)
+
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                // This method will be executed once the timer is over
+                updateButton.text = "Update Data"
+            },
+            updateTextWaitingTime // value in milliseconds
+        )
     }
-
-
 }
 

@@ -38,3 +38,6 @@ I used several tutorials to help me during this project:
 * Git Repo about easy permissions: https://github.com/googlesamples/easypermissions
 * Get Request on a url using retrofit: https://www.youtube.com/watch?v=sRLunCZX2Uc
 * Permission and user location implementation: https://developers.google.com/maps/documentation/android-sdk/location#kotlin
+* Waiting while handling other things: https://stackoverflow.com/questions/45213706/kotlin-wait-function
+* Getting current time: https://stackoverflow.com/questions/47006254/how-to-get-current-local-date-and-time-in-kotlin
+* Adding a marker on click listener: ChatGPT + https://stackoverflow.com/questions/57632757/open-a-new-page-when-marker-clicked-on-map-android-studio
