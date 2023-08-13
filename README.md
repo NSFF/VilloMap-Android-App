@@ -2,6 +2,8 @@
 
 This project represents an Android Phone application where you can view OPEN Villo bicycle locations on a map interface. It fetches the Villo location data from https://data.mobility.brussels/nl/info/villo/ .
 
+![Example image of the Villo App](images/example.PNG)
+
 # Software Used
 
 * Android Studio Dolphin 2021.3.1
@@ -26,11 +28,13 @@ If you initialized the project on your local setup, you will need to create your
 * User location will be shown if given permission
 * Camera moves/zoom in to user location or one of the bicycle locations upon start up or data update.
 * Little button top right of the map to relocate to use location.
+* 1 Example of a Junit test but it is bugged as I need to correctly implement the mocking setup
 
 # Known Bugs
 
 * Unsure if user location will be updated if they move. (I tried implementing this, but had a lot of permission/version issues and eventually gave up)
 * There is currently no other language support except english
+* My Junit Example of testing the download and storing of the data has an 'android.os.Looper not mocked' error.
 
 # References
 I used several tutorials to help me during this project:
@@ -48,3 +52,4 @@ I used several tutorials to help me during this project:
 * Clicking a marker opens up google maps app with destination: https://stackoverflow.com/questions/2662531/launching-google-maps-directions-via-an-intent-on-android
 * Google maps urls: https://developers.google.com/maps/documentation/urls/get-started
 * Storing Data classes into internal storage: ChatGPT + https://stackoverflow.com/questions/54512254/saving-a-class-to-internal-storage-on-android-kotlin + https://stackoverflow.com/questions/46376108/unable-to-access-variable-from-innerclass-kotlin-android + https://stackoverflow.com/questions/65550973/android-with-kotlin-best-ways-to-storage-a-custom-class + https://www.javatpoint.com/kotlin-android-read-and-write-internal-storage + https://www.javatpoint.com/kotlin-android-read-and-write-internal-storage
+* Fixing junit import bug: https://stackoverflow.com/questions/71429854/could-not-find-org-junit-jupiterjunit-jupiter
