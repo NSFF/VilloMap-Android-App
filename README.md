@@ -41,3 +41,6 @@ I used several tutorials to help me during this project:
 * Waiting while handling other things: https://stackoverflow.com/questions/45213706/kotlin-wait-function
 * Getting current time: https://stackoverflow.com/questions/47006254/how-to-get-current-local-date-and-time-in-kotlin
 * Adding a marker on click listener: ChatGPT + https://stackoverflow.com/questions/57632757/open-a-new-page-when-marker-clicked-on-map-android-studio
+* Clicking a marker opens up google maps app with destination: https://stackoverflow.com/questions/2662531/launching-google-maps-directions-via-an-intent-on-android
+* Google maps urls: https://developers.google.com/maps/documentation/urls/get-started
+* 

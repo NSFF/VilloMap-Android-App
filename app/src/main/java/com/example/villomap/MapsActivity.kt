@@ -3,7 +3,9 @@ package com.example.villomap
 import android.Manifest
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -148,8 +150,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, EasyPermissions.Pe
 
         // Set an OnMarkerClickListener on the map
         mMap.setOnMarkerClickListener { clickedMarker ->
-            // Do something when the marker is clicked, such as showing a toast message
-            Toast.makeText(this, "Clicked on ${clickedMarker.title}", Toast.LENGTH_SHORT).show()
+            val intent: Intent = Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("https://www.google.com/maps/dir/?api=1"+
+                        "&destination=" +
+                        clickedMarker.title?.replace(" ","+") +
+                        "%2CBelgium" + "&travelmode=walking"
+                ));
+            startActivity(intent)
+            Toast.makeText(this, "${clickedMarker.title}", Toast.LENGTH_SHORT).show()
             // Return true to indicate that the click event is consumed
             true
         }
