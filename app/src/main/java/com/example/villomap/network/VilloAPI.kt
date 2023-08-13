@@ -1,4 +1,4 @@
-package com.example.villomap
+package com.example.villomap.network
 
 import com.example.villomap.data.FeatureCollection
 import retrofit2.Response

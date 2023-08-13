@@ -8,6 +8,8 @@ This project represents an Android Phone application where you can view OPEN Vil
 
 * API SDK: 21 Android (Lollipop)
 
+(Tested and worked on Pixel phone 3a API 33 x86_64)
+
 # Setting up the project
 
 If you initialized the project on your local setup, you will need to create your google maps android SDK API key and add a variable MAPS_API_Key=<your key here> in your local.properties file to make the google maps work.
@@ -16,17 +18,19 @@ If you initialized the project on your local setup, you will need to create your
 
 * Displaying all OPEN Villo bicycle locations
 * Pulling Villo data from https://data.mobility.brussels/geoserver/bm_bike/wfs?service=wfs&version=1.1.0&request=GetFeature&typeName=bm_bike:villo&outputFormat=json&srsName=EPSG:4326 on First startup or if existing data is older than 15 min
-* Displaying date of last update of the data
+* Displaying latest or stored data pulled from the Villo API
 * Refresh button to forcefully refresh all data pulled from https://data.mobility.brussels/geoserver/bm_bike/wfs?service=wfs&version=1.1.0&request=GetFeature&typeName=bm_bike:villo&outputFormat=json&srsName=EPSG:4326
 * Persisting Data 
 * Fetching Data from internal storage if already exists
-* Updating data on Startup if it's more than 15 minutes old
-* Tapping Annotations pops up a little callout showing more information like the Street
+* Tapping Markers/Annotations of bicycle locations redirects you to google Maps app with the use of Intents and automatically shows the direction you have to take while walking.
 * User location will be shown if given permission
+* Camera moves/zoom in to user location or one of the bicycle locations upon start up or data update.
+* Little button top right of the map to relocate to use location.
 
 # Known Bugs
 
 * Unsure if user location will be updated if they move. (I tried implementing this, but had a lot of permission/version issues and eventually gave up)
+* There is currently no other language support except english
 
 # References
 I used several tutorials to help me during this project:
@@ -43,4 +47,4 @@ I used several tutorials to help me during this project:
 * Adding a marker on click listener: ChatGPT + https://stackoverflow.com/questions/57632757/open-a-new-page-when-marker-clicked-on-map-android-studio
 * Clicking a marker opens up google maps app with destination: https://stackoverflow.com/questions/2662531/launching-google-maps-directions-via-an-intent-on-android
 * Google maps urls: https://developers.google.com/maps/documentation/urls/get-started
-* 
+* Storing Data classes into internal storage: ChatGPT + https://stackoverflow.com/questions/54512254/saving-a-class-to-internal-storage-on-android-kotlin + https://stackoverflow.com/questions/46376108/unable-to-access-variable-from-innerclass-kotlin-android + https://stackoverflow.com/questions/65550973/android-with-kotlin-best-ways-to-storage-a-custom-class + https://www.javatpoint.com/kotlin-android-read-and-write-internal-storage + https://www.javatpoint.com/kotlin-android-read-and-write-internal-storage

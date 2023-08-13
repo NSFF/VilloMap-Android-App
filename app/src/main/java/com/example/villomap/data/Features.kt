@@ -4,4 +4,4 @@ data class Features(
     val id: String,
     val geometry: Geometry,
     val properties: Properties,
-)
+) : java.io.Serializable

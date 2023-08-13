@@ -17,4 +17,4 @@ data class Properties(
     val bonus: Boolean,
     val banking: Boolean,
     val bike_stands: Int
-)
+) : java.io.Serializable

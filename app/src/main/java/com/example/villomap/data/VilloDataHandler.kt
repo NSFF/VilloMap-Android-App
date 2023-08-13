@@ -1,7 +1,7 @@
-package com.example.villomap
+package com.example.villomap.data
 
-import android.util.Log
-import com.example.villomap.data.FeatureCollection
+import com.example.villomap.network.RetrofitHelper
+import com.example.villomap.network.VilloAPI
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
